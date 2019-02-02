@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+// 単一ファイル化を拒否
+option java_multiple_files = true;
+// コード上のパッケージ名
+option java_package = "example.myapp.helloworld.grpc";
+// 何のために出力されるかよく分からんクラス
+option java_outer_classname = "HelloWoldProto";
+
+// protobuf的パッケージ名
+package helloworld;
+
+// サービス規定
+service GreeterService {
+
+    // 単発リクエスト → 単発リプライ
+    rpc SayHello(HelloRequest) returns (HelloReply) {}
+
+    // ストリームリクエスト → 単発リプライ
+    rpc ItKeepsTalking(stream HelloRequest) returns (HelloReply) {}
+
+    // 単発リプライ → ストリームリクエスト
+    rpc ItKeepsReplying(HelloRequest) returns (stream HelloReply) {}
+
+    // ストリームリクエスト → ストリームリプライ
+    rpc StreamHellos(stream HelloRequest) returns (stream HelloReply) {}
+}
+
+// リクエスト形式
+message HelloRequest {
+    string name = 1;
+}
+
+// リプライ形式
+message HelloReply {
+    string message = 1;
+}
